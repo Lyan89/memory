@@ -7,6 +7,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import time
+import pyautogui, sys
+
 
 def get_url(file_path="url.txt"):
     try:
@@ -28,33 +31,27 @@ options = Options()
 options.add_experimental_option("detach", True)
 options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
 
+
+# Open Window
 driver = webdriver.Chrome(
     service=Service(ChromeDriverManager().install()),
     options=options
 )
-
+driver.maximize_window()
 driver.get(url)
+time.sleep(3)
 
-# Wait until the canvas is present (max 20 seconds)
-canvas = WebDriverWait(driver, 20).until(
-    EC.presence_of_element_located((By.TAG_NAME, "canvas"))
-)
 
-# Find canvas
-canvas = driver.find_element(By.TAG_NAME, "canvas")
+pyautogui.moveTo(1266, 945)   # moves mouse
+pyautogui.click()  # click the mouse
 
-# Get canvas size
-canvas_width = canvas.size['width']
-canvas_height = canvas.size['height']
-print(f"Canvas size: {canvas_width}x{canvas_height}")
 
-from selenium.webdriver.common.action_chains import ActionChains
 
-# Assume the interactive element is already located
-interactive_div = driver.find_element(By.CLASS_NAME, "c3htmlwrap")
 
 
 # Retrieve console logs after your click has been simulated.
 logs = driver.get_log('browser')
 for log_entry in logs:
     print(log_entry['message'])
+
+print("finish")
