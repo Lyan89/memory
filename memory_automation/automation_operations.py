@@ -12,6 +12,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 def automateMemoryMatch():
@@ -68,19 +71,8 @@ def automateMemoryMatch():
     tiles = getTilesArr()
     pairs = getPairsArr()
 
-
-
     for i in range(length):
         print("\n\n========== New Iteration ==========")
-
-        # ===== Set up ===== #
-        # get current window view and set path
-      #  windowPath = captureWindow()
-        # find instance of unknown
-        #unknownNumber = getUnknownTileSize(windowPath, 0.7)
-        # # set unknown path
-        # unknownPath = "./imgRef/unknowns/unknown" + unknownNumber + ".png"
-        #print("Unknown Path:\t" + unknownPath)
 
         # ===== Run Main Funcs ===== #
         # find all unknown tiles
@@ -103,9 +95,6 @@ def automateMemoryMatch():
             "./imgRef/tiles/img_" + str(i + 1) + ".png"
             os.remove("./imgRef/tiles/img_" + str(i + 1) + ".png")
         print("Tiles deleted successfully")
-        # delete the screenshot
-     #   os.remove("./imgRef/misc/currentBoard.png")
-      #  print("Screenshot deleted")
 
         # remove everything in tiles and pairs arr to reset them to be used in next iteration
         print("\n\n==== Clearing arrays ====\n")
@@ -114,5 +103,22 @@ def automateMemoryMatch():
         print("Arrays cleared successfully")
 
         # wait for level complete animation
-        time.sleep(3)
+        time.sleep(10)
+
+
+        # Wait up to 10 seconds for the element to be present
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "name"))
+        )
+
+        # Now interact with it
+        element.send_keys("YourUsername")
+
+        # Fill in username
+        # username_input = driver.find_element(By.ID, "name")
+        # username_input.send_keys("my_username")  # Replace with actual username
+
+        # Fill in email
+        # email_input = driver.find_element(By.ID, "email")
+        # email_input.send_keys("user@example.com")  # Replace with actual email
 
