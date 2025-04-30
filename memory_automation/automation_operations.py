@@ -17,7 +17,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-def automateMemoryMatch():
+def automateMemoryMatch(Username,Email,MaxLevel):
     print("Automation Starting")
     # Load Memory Url from file
     def get_url(file_path="url.txt"):
@@ -50,11 +50,8 @@ def automateMemoryMatch():
     driver.get(url)
     time.sleep(1)
 
-    
-
-
     # set length to 9 for 9 levels 
-    numberoflevels = 3
+    numberoflevels = MaxLevel
 
     # get tiles and pairs arr
     tiles = getTilesArr()
@@ -127,14 +124,14 @@ def automateMemoryMatch():
             )
 
             # Now interact with it
-            elementName.send_keys("rlzrhzqeeniptzkcge")
+            elementName.send_keys(Username)
 
             elementMail = WebDriverWait(driver, 0.1).until(
                 EC.presence_of_element_located((By.ID, "email"))
             )
 
             # Now interact with it
-            elementMail.send_keys("rlzrhzqeeniptzkcge@hthlm.com")
+            elementMail.send_keys(Email)
 
             # Click continue
             clickContinue()
