@@ -26,6 +26,11 @@ def clickStart():
     pyautogui.click()  # click the mouse
     time.sleep(1)
 
+def clickContinue():
+    pyautogui.moveTo(1266, 955)   # moves mouse
+    pyautogui.click()  # click the mouse
+    time.sleep(1)
+
 # get tiles arr
 def getTilesArr():
     return tiles
@@ -33,7 +38,6 @@ def getTilesArr():
 def initializeTiles():
 
 
-    
     canvaspositionx = 917 # top left
     canvaspositiony = 140
     canvaswidth = 689

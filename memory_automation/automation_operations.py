@@ -7,7 +7,7 @@ import pygetwindow
 # automation functions
 from memory_automation.pair_operations import sortPairs, locatePairs, getPairsArr
 from memory_automation.screenshot_operations import captureWindow
-from memory_automation.tile_operations import getUnknownTileSize, findTileInstances, getTilesArr, getTileImages, initializeTiles, clickStart
+from memory_automation.tile_operations import getUnknownTileSize, findTileInstances, getTilesArr, getTileImages, initializeTiles, clickStart, clickContinue
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -50,28 +50,43 @@ def automateMemoryMatch():
     driver.get(url)
     time.sleep(1)
 
-    clickStart()
+    
 
-    # Retrieve console logs after your click has been simulated.
-    logs = driver.get_log('browser')
-    random_numbers = []
-    for log_entry in logs:
-        message = log_entry['message']
-        lines = message.split("\n")
-        for line in lines:
-            if "Random number:" in line:
-                random_number = int(line.split(": ")[1])
-                random_numbers.append(random_number)
-
-    print(random_numbers)
 
     # set length to 9 for 9 levels 
-    length = 1
+    numberoflevels = 3
+
     # get tiles and pairs arr
     tiles = getTilesArr()
     pairs = getPairsArr()
 
-    for i in range(length):
+    for level in range(numberoflevels):
+
+        print("\n\n========== Start Game ==========")
+
+        clickStart()
+        print("Starting with Level: " + str(level))
+
+        print("\n\n========== Get Logs ==========")
+
+        # Retrieve console logs after start
+        logs = driver.get_log('browser')
+        random_numbers = []
+        for log_entry in logs:
+            message = log_entry['message']
+            lines = message.split("\n")
+            for line in lines:
+                if "Random number:" in line:
+                    random_number = int(line.split(": ")[1])
+                    random_numbers.append(random_number)
+
+        print(random_numbers)
+
+        # Check if random_numbers is empty
+        if not random_numbers:
+            print("No random numbers found in the logs.")
+            break  # only valid if this is inside a loop
+
         print("\n\n========== New Iteration ==========")
 
         # ===== Run Main Funcs ===== #
@@ -103,20 +118,27 @@ def automateMemoryMatch():
         print("Arrays cleared successfully")
 
         # wait for level complete animation
-        time.sleep(10)
+        time.sleep(6)
+        
+        if (level == 0):
+            print("\n\n==== Enter Contact ====\n")
+            elementName = WebDriverWait(driver, 0.1).until(
+                EC.presence_of_element_located((By.ID, "name"))
+            )
 
-        elementName = WebDriverWait(driver, 0.1).until(
-            EC.presence_of_element_located((By.ID, "name"))
-        )
+            # Now interact with it
+            elementName.send_keys("rlzrhzqeeniptzkcge")
 
-        # Now interact with it
-        elementName.send_keys("YourUsername")
+            elementMail = WebDriverWait(driver, 0.1).until(
+                EC.presence_of_element_located((By.ID, "email"))
+            )
 
-        elementMail = WebDriverWait(driver, 0.1).until(
-            EC.presence_of_element_located((By.ID, "email"))
-        )
+            # Now interact with it
+            elementMail.send_keys("rlzrhzqeeniptzkcge@hthlm.com")
 
-        # Now interact with it
-        elementMail.send_keys("YourMail@mail.ch")
+            # Click continue
+            clickContinue()
 
+        # wait for level complete animation
+        time.sleep(3)
 
