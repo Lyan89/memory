@@ -1,8 +1,8 @@
 # automation functions
 from memory_automation.automation_operations import automateMemoryMatch
 
-Username = "wawsfidbuybkaotbxw"
-Email = "wawsfidbuybkaotbxw@poplk.com"
+Username = "rqq01"
+Email = "rqq01@10minmail.pro"
 MaxLevel = 6
 
 # memory match solver

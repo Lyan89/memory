@@ -121,10 +121,11 @@ def automateMemoryMatch(Username,Email,MaxLevel):
         pairs.clear()
         print("Arrays cleared successfully")
 
-        # wait for level complete animation
-        time.sleep(6)
-        
         if (level == 0):
+
+            # wait for level complete animation
+            time.sleep(6)
+
             print("\n\n==== Enter Contact ====\n")
             elementName = WebDriverWait(driver, 0.1).until(
                 EC.presence_of_element_located((By.ID, "name"))
@@ -148,7 +149,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
         loop_end = time.time()
         loop_duration = loop_end - loop_start
-        print(f"Loop {i} duration: {loop_duration:.4f} seconds")
+        print(f"Level {level} duration: {loop_duration:.4f} seconds")
 
     # End total timer
     total_end = time.time()
