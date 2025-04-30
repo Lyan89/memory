@@ -54,8 +54,13 @@ def initializeTiles():
     tileoffsetx = 261
     tileoffsety = 298
 
+    cropclearance = 22
+
+
     starttilex = int(1280 - tileoffsetx-tilewidth/2)
     starttiley = int(canvaspositiony + starttileoffsety-tileheight/2)
+
+    
 
     print("starttilex: " + str(starttilex) + "starttiley: " + str(starttiley))
     
@@ -69,11 +74,11 @@ def initializeTiles():
             centerX = startclickx + row*clickoffsetx
             centerY = startclicky + column*clickoffsety
 
-            x = starttilex + row*tileoffsetx
-            y = starttiley + column*tileoffsety
+            x = starttilex + row*tileoffsetx + cropclearance
+            y = starttiley + column*tileoffsety + cropclearance
 
-            w = tilewidth
-            h = tileheight
+            w = tilewidth -2*cropclearance
+            h = tileheight -2*cropclearance
 
             # add rect data to tiles arr
             tiles.append(Tile("tile_" + str(counter), x, y, w, h, centerX, centerY))
