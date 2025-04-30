@@ -126,5 +126,5 @@ def locatePairs():
         # move to tile2 of pair and click
         pyautogui.moveTo(pairs[i].t2[0], pairs[i].t2[1])
         pyautogui.click()
-        time.sleep(1)
+        time.sleep(0.5)
     print("All pairs located successfully")

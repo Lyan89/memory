@@ -57,11 +57,17 @@ def automateMemoryMatch(Username,Email,MaxLevel):
     tiles = getTilesArr()
     pairs = getPairsArr()
 
+    # Start total timer
+    total_start = time.time()
+
     for level in range(numberoflevels):
 
         print("\n\n========== Start Game ==========")
 
+        loop_start = time.time()
+
         clickStart()
+
         print("Starting with Level: " + str(level))
 
         print("\n\n========== Get Logs ==========")
@@ -100,6 +106,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
         # find and locate all pairs
         locatePairs()
+        
         # ========================== #
         # delete all tile images
         print("\n\n==== Deleting all Tile Images ====\n")
@@ -139,3 +146,11 @@ def automateMemoryMatch(Username,Email,MaxLevel):
         # wait for level complete animation
         time.sleep(3)
 
+        loop_end = time.time()
+        loop_duration = loop_end - loop_start
+        print(f"Loop {i} duration: {loop_duration:.4f} seconds")
+
+    # End total timer
+    total_end = time.time()
+    total_duration = total_end - total_start
+    print(f"Total duration: {total_duration:.4f} seconds")
