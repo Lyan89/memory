@@ -105,20 +105,18 @@ def automateMemoryMatch():
         # wait for level complete animation
         time.sleep(10)
 
-
-        # Wait up to 10 seconds for the element to be present
-        element = WebDriverWait(driver, 10).until(
+        elementName = WebDriverWait(driver, 0.1).until(
             EC.presence_of_element_located((By.ID, "name"))
         )
 
         # Now interact with it
-        element.send_keys("YourUsername")
+        elementName.send_keys("YourUsername")
 
-        # Fill in username
-        # username_input = driver.find_element(By.ID, "name")
-        # username_input.send_keys("my_username")  # Replace with actual username
+        elementMail = WebDriverWait(driver, 0.1).until(
+            EC.presence_of_element_located((By.ID, "email"))
+        )
 
-        # Fill in email
-        # email_input = driver.find_element(By.ID, "email")
-        # email_input.send_keys("user@example.com")  # Replace with actual email
+        # Now interact with it
+        elementMail.send_keys("YourMail@mail.ch")
+
 
