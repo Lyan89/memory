@@ -28,7 +28,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
     # Open browser with URL
     browser = Browser(headless=False)
-    browser.open(url)
+    browser.open(url,6)
 
     # Get game region
     gameRegion = browser.getGameRegion()
@@ -58,7 +58,13 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
             clickStart(gameRegion)
 
+<<<<<<< HEAD
             print("Starting with Level: " + str(level))
+=======
+        # Retrieve console logs after start
+        random_numbers = browser.extract_random_numbers_from_console()
+        print(random_numbers)
+>>>>>>> mac-update
 
             print("\n\n========== Get Logs ==========")
 
@@ -79,7 +85,12 @@ def automateMemoryMatch(Username,Email,MaxLevel):
             # find all unknown tiles
             initializeTiles(gameRegion)
 
+<<<<<<< HEAD
             print("Current total tiles: " + str(len(tiles)))
+=======
+        # get all pairs
+        sortPairs(gameRegion)
+>>>>>>> mac-update
 
             # get all revealed tile images
             getTileImages()
