@@ -283,24 +283,10 @@ def getTileImages():
         # click tile to reveal image
         pyautogui.click()
         time.sleep(0.5)
-
-
-        
-        if i == 0:
-            # take image at given coords
-            captureScreenshot("./tiles/img_" + str(counter) + ".png", "coords", tiles[i].x, tiles[i].y, tiles[i].w, tiles[i].h)
-            counter += 1
-        else:
-            # click to reveal fast image
-            pyautogui.click()
-            time.sleep(0.5)
-            # click tile again to reveal image
-            pyautogui.click()
-            time.sleep(0.5)
-             # take image at given coords
-            captureScreenshot("./tiles/img_" + str(counter) + ".png", "coords", tiles[i].x, tiles[i].y, tiles[i].w, tiles[i].h)
-            counter += 1
-    time.sleep(0.5)
+        # take image at given coords
+        captureScreenshot("./tiles/img_" + str(counter) + ".png", "coords", tiles[i].x, tiles[i].y, tiles[i].w, tiles[i].h)
+        counter += 1
+        time.sleep(0.5)
     
     print("revealed all tile imgs")
 
