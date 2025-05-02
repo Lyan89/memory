@@ -23,8 +23,10 @@ tiles = []
 
 def clickStart(gameRegion):
 
-    offsetx = 0 
-    offsety = 805
+    scale = gameRegion[2]/705 # Scaling in case game region is different than originally currentWidth/designerwidth
+
+    offsetx = int(0*scale)
+    offsety = int(805*scale)
 
     clickx = int(gameRegion[0] + gameRegion[2]/2+offsetx)
     clicky = int(gameRegion[1] + offsety)
@@ -37,8 +39,10 @@ def clickStart(gameRegion):
 
 def clickContinue(gameRegion):
 
-    offsetx = 0 
-    offsety = 815
+    scale = gameRegion[2]/705 # Scaling in case game region is different than originally currentWidth/designerwidth
+
+    offsetx = int(0*scale) 
+    offsety = int(815*scale)
 
     clickx = int(gameRegion[0] + gameRegion[2]/2+offsetx)
     clicky = int(gameRegion[1] + offsety)
@@ -56,11 +60,13 @@ def initializeTiles(gameRegion):
 
     region = gameRegion
 
-    clickdistancex = 220 # x-distance between click tiles
-    clickdistancey = 250 # y-distance between click tiles
+    scale = gameRegion[2]/705 # Scaling in case game region is different than originally currentWidth/designerwidth
 
-    clickoffsetx = 1 # Offset between canvas top and first tile center
-    clickoffsety = 263 # Offset between canvas top and first tile center
+    clickdistancex = int(220*scale) # x-distance between click tiles
+    clickdistancey = int(250*scale) # y-distance between click tiles
+
+    clickoffsetx = int(1*scale) # Offset between canvas top and first tile center
+    clickoffsety = int(263*scale) # Offset between canvas top and first tile center
 
     startclickx = int(region[0] + region[2]/2 - clickdistancex + clickoffsetx)
     startclicky = int(region[1] + clickoffsety)
@@ -68,21 +74,23 @@ def initializeTiles(gameRegion):
     print("startclickx: " + str(startclickx) + " startclicky: " + str(startclicky))
 
 
-    tiledistancex = 261 # x-distance between tiles
-    tiledistancey = 298 # y-distance between tiles
+    tiledistancex = int(261*scale) # x-distance between tiles
+    tiledistancey = int(298*scale) # y-distance between tiles
 
-    tileoffsetx = -113 # Offset between canvas top and first tile center
-    tileoffsety = 83 # Offset between canvas top and first tile center
+    tileoffsetx = int(-113*scale) # Offset between canvas top and first tile center
+    tileoffsety = int(83*scale) # Offset between canvas top and first tile center
 
     starttilex = int(region[0] + region[2]/2 - tiledistancex + tileoffsetx)
     starttiley = int(region[1] + tileoffsety)
 
     print("starttilex: " + str(starttilex) + " starttiley: " + str(starttiley))
 
-    cropclearance = 22 # images need be cropped by this much (Since not full size is visible everywhere)
+    cropclearance = int(22*scale) # images need be cropped by this much (Since not full size is visible everywhere)
 
-    tilewidth = 228 # Width of the tiles
-    tileheight = 228 # Height of the tiles
+    cropclearance = 0 # images need be cropped by this much (Since not full size is visible everywhere)
+
+    tilewidth = int(228*scale) # Width of the tiles
+    tileheight = int(228*scale) # Height of the tiles
 
     rows = 3
     columns = 4
@@ -258,6 +266,7 @@ def getTileImages():
     counter = 1
     length = len(tiles)
     # iterate over each tile in tiles arr
+
     for i in range(length):
         print(
             "tile name: " + tiles[i].tileName,
@@ -274,10 +283,26 @@ def getTileImages():
         # click tile to reveal image
         pyautogui.click()
         time.sleep(0.5)
-        # take image at given coords
-        captureScreenshot("./tiles/img_" + str(counter) + ".png", "coords", tiles[i].x, tiles[i].y, tiles[i].w, tiles[i].h)
-        counter += 1
-        time.sleep(0.5)
+        if i == 0:
+            # take image at given coords
+            captureScreenshot("./tiles/img_" + str(counter) + ".png", "coords", tiles[i].x, tiles[i].y, tiles[i].w, tiles[i].h)
+            counter += 1
+            firstInPair = False
+        else:
+            # click to reveal fast image
+            pyautogui.click()
+            time.sleep(0.6)
+            # click tile again to reveal image
+            pyautogui.click()
+            time.sleep(0.5)
+             # take image at given coords
+            captureScreenshot("./tiles/img_" + str(counter) + ".png", "coords", tiles[i].x, tiles[i].y, tiles[i].w, tiles[i].h)
+            counter += 1
+        if(i == length-1):
+            pyautogui.moveTo(tiles[0].centerX, tiles[0].centerY)
+            # click first tile to finish pair
+            pyautogui.click()
+    time.sleep(0.5)
     
     print("revealed all tile imgs")
 

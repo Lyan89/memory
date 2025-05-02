@@ -23,11 +23,17 @@ def getPairsArr():
     return pairs
 
 
+def cropImage(image, frameSize):
+    # Remove frameSize pixels from each side
+    cropped_image = image[frameSize:-frameSize, frameSize:-frameSize]
+    return cropped_image
+
+
 # check if 2 imgs match
-def matchPair(imgPath1, imgPath2, thresholdVal):
+def matchPair(imgPath1, imgPath2, thresholdVal,frameSize):
     # define imgs as variables 
-    img1 = cv.imread(imgPath1, cv.IMREAD_UNCHANGED)
-    img2 = cv.imread(imgPath2, cv.IMREAD_UNCHANGED)
+    img1 = cropImage(cv.imread(imgPath1, cv.IMREAD_UNCHANGED),frameSize)
+    img2 = cropImage(cv.imread(imgPath2, cv.IMREAD_UNCHANGED),frameSize)
 
     # check dimensions
     # print(
@@ -61,7 +67,12 @@ def matchPair(imgPath1, imgPath2, thresholdVal):
 
 
 # sort into pairs
-def sortPairs():
+def sortPairs(gameRegion):
+
+    scale = gameRegion[2]/705 # Scaling in case game region is different than originally currentWidth/designerwidth
+    frameSize = int(22*scale)
+
+
     # get tiles arr
     tiles = getTilesArr()
 
@@ -87,8 +98,9 @@ def sortPairs():
                 continue
 
             else:
+                scale = gameRegion
                 # compare image i and j
-                checkMatch = matchPair("./imgRef/tiles/img_" + str(i + 1) + ".png", "./imgRef/tiles/img_" + str(j + 1) + ".png", thresholdVal = 0.8)
+                checkMatch = matchPair("./imgRef/tiles/img_" + str(i + 1) + ".png", "./imgRef/tiles/img_" + str(j + 1) + ".png", thresholdVal = 0.8, frameSize=frameSize)
                 # if they match we increment pairCount and add i to the matched arr
                 if checkMatch:
                     if ((j - i) == 1) and ((j % 2) != 0):
@@ -101,13 +113,14 @@ def sortPairs():
                         matched.append(j)
                         print("Pair " + str(pairCount) + ": ", str(i + 1) + " and " + str(j + 1))
 
-                        # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
-                        pairs.append(Pair("Pair_" + str(pairCount), [tiles[i].centerX, tiles[i].centerY], [tiles[j].centerX, tiles[j].centerY]))
+                    # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
+                    pairs.append(Pair("Pair_" + str(pairCount), [tiles[i].centerX, tiles[i].centerY], [tiles[j].centerX, tiles[j].centerY]))
 
 
 
 # locate and reveal all pairs (completing board)
 def locatePairs():
+    time.sleep(0.5)
     # new section of data display
     print("\n\n==== Locating All Pairs ====\n")
     length = len(pairs)

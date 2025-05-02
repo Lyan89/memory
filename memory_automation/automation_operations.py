@@ -28,7 +28,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
     # Open browser with URL
     browser = Browser(headless=False)
-    browser.open(url)
+    browser.open(url,6)
 
     # Get game region
     gameRegion = browser.getGameRegion()
@@ -59,7 +59,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
         print("\n\n========== Get Logs ==========")
 
         # Retrieve console logs after start
-        random_numbers = browser
+        random_numbers = browser.extract_random_numbers_from_console()
         print(random_numbers)
 
         # Check if random_numbers is empty
@@ -79,7 +79,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
         getTileImages()
 
         # get all pairs
-        sortPairs()
+        sortPairs(gameRegion)
 
         # find and locate all pairs
         locatePairs()
