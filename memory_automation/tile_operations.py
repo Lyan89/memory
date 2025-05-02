@@ -38,36 +38,37 @@ def getTilesArr():
 def initializeTiles():
 
 
-    canvaspositionx = 917 # top left
-    canvaspositiony = 140
-    canvaswidth = 689
-    canvasheight = 1225
-
-    tilewidth = 228
-    tileheight = 228
-
-    clickoffsetx = 220
-    clickoffsety = 250
-
-    startclickoffsety = 263 # Offset from canvas top to first tile click
-    startclickx = int(1280 - clickoffsetx)
-    startclicky = int(canvaspositiony + startclickoffsety)
-    print("startclickx: " + str(startclickx) + "startclicky: " + str(startclicky))
-
-    starttileoffsety = 197
-    tileoffsetx = 261
-    tileoffsety = 298
-
-    cropclearance = 22
+    region = (927, 140, 705, 1253)
 
 
-    starttilex = int(1280 - tileoffsetx-tilewidth/2)
-    starttiley = int(canvaspositiony + starttileoffsety-tileheight/2)
+    clickdistancex = 220 # x-distance between click tiles
+    clickdistancey = 250 # y-distance between click tiles
 
-    
+    clickoffsetx = 1 # Offset between canvas top and first tile center
+    clickoffsety = 263 # Offset between canvas top and first tile center
 
-    print("starttilex: " + str(starttilex) + "starttiley: " + str(starttiley))
-    
+    startclickx = int(region[0] + region[2]/2 - clickdistancex + clickoffsetx)
+    startclicky = int(region[1] + clickoffsety)
+
+    print("startclickx: " + str(startclickx) + " startclicky: " + str(startclicky))
+
+
+    tiledistancex = 261 # x-distance between tiles
+    tiledistancey = 298 # y-distance between tiles
+
+    tileoffsetx = -113 # Offset between canvas top and first tile center
+    tileoffsety = 83 # Offset between canvas top and first tile center
+
+    starttilex = int(region[0] + region[2]/2 - tiledistancex + tileoffsetx)
+    starttiley = int(region[1] + tileoffsety)
+
+    print("starttilex: " + str(starttilex) + " starttiley: " + str(starttiley))
+
+    cropclearance = 22 # images need be cropped by this much (Since not full size is visible everywhere)
+
+    tilewidth = 228 # Width of the tiles
+    tileheight = 228 # Height of the tiles
+
     rows = 3
     columns = 4
     counter = 0
@@ -75,11 +76,11 @@ def initializeTiles():
         for row in range(rows):
         
             
-            centerX = startclickx + row*clickoffsetx
-            centerY = startclicky + column*clickoffsety
+            centerX = startclickx + row*clickdistancex
+            centerY = startclicky + column*clickdistancey
 
-            x = starttilex + row*tileoffsetx + cropclearance
-            y = starttiley + column*tileoffsety + cropclearance
+            x = starttilex + row*tiledistancex + cropclearance
+            y = starttiley + column*tiledistancey + cropclearance
 
             w = tilewidth -2*cropclearance
             h = tileheight -2*cropclearance
