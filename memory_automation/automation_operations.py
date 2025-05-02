@@ -59,13 +59,15 @@ def automateMemoryMatch(Username,Email,MaxLevel):
         print("\n\n========== Get Logs ==========")
 
         # Retrieve console logs after start
-        random_numbers = browser
-        print(random_numbers)
+        random_numbers = browser.extract_random_numbers_from_console()
+        
 
         # Check if random_numbers is empty
         if not random_numbers:
             print("No random numbers found in the logs.")
             break  # only valid if this is inside a loop
+        else:
+            print("Random number: " + str(random_numbers))
 
         print("\n\n========== New Iteration ==========")
 
