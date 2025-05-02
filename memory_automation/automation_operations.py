@@ -119,7 +119,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
             loop_end = time.time()
             loop_duration = loop_end - loop_start
-            print(f"Level {level} duration: {loop_duration:.4f} seconds")
+            print(f"Level {level+1} duration: {loop_duration:.4f} seconds")
 
         # End total timer
         total_end = time.time()
@@ -127,11 +127,11 @@ def automateMemoryMatch(Username,Email,MaxLevel):
         print(f"Total duration: {total_duration:.4f} seconds")
 
         user_input = input(
-            f"You are at level {level}. Enter how many levels to play (or 'q' to quit): "
+            f"You are at level {level+1}. Enter how many levels to play (or 'q' to quit): "
         )
         if user_input.lower() == 'q':
             print("Exiting program.")
             break
-
+        current_level = level
         levels_to_run = int(user_input)
         end_level = current_level + levels_to_run

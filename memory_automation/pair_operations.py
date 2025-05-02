@@ -137,12 +137,12 @@ def locatePairs():
     sorted_pairs = sorted(pairs, key=lambda p: max(p.tile1_num, p.tile2_num), reverse=True)
 
     for pair in sorted_pairs:
-        print(
-            pair.pairName,
-            "\nPosition 1 - \n\t" + "x: " + str(pair.t1[0]) + "\n\ty: " + str(pair.t1[1]), 
-            "\nPosition 2 - \n\t" + "x: " + str(pair.t2[0]) + "\n\ty: " + str(pair.t2[1]),
-            "\n-------------"
-        )
+         # print(
+         #     pair.pairName,
+         #     "\nPosition 1 - \n\t" + "x: " + str(pair.t1[0]) + "\n\ty: " + str(pair.t1[1]), 
+         #     "\nPosition 2 - \n\t" + "x: " + str(pair.t2[0]) + "\n\ty: " + str(pair.t2[1]),
+         #     "\n-------------"
+         # )
 
         pyautogui.moveTo(pair.t1[0], pair.t1[1])
         pyautogui.click()
