@@ -56,21 +56,15 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
             loop_start = time.time()
 
-            clickStart(gameRegion)
-
-<<<<<<< HEAD
             print("Starting with Level: " + str(level))
-=======
-        # Retrieve console logs after start
-        random_numbers = browser.extract_random_numbers_from_console()
-        print(random_numbers)
->>>>>>> mac-update
+
+            clickStart(gameRegion)
 
             print("\n\n========== Get Logs ==========")
 
             # Retrieve console logs after start
             random_numbers = browser.extract_random_numbers_from_console()
-            
+            print(random_numbers)
 
             # Check if random_numbers is empty
             if not random_numbers:
@@ -85,18 +79,13 @@ def automateMemoryMatch(Username,Email,MaxLevel):
             # find all unknown tiles
             initializeTiles(gameRegion)
 
-<<<<<<< HEAD
             print("Current total tiles: " + str(len(tiles)))
-=======
-        # get all pairs
-        sortPairs(gameRegion)
->>>>>>> mac-update
-
+            
             # get all revealed tile images
             getTileImages()
 
             # get all pairs
-            sortPairs()
+            sortPairs(gameRegion)
 
             # find and locate all pairs
             locatePairs()

@@ -10,10 +10,12 @@ from memory_automation.tile_operations import getTilesArr
 
 # declare pair class for matching pairs
 class Pair:
-    def __init__(self, pairName, t1, t2):
+    def __init__(self, pairName, t1, t2, tile1_num, tile2_num):
         self.pairName = pairName
         self.t1 = t1
         self.t2 = t2
+        self.tile1_num = tile1_num  # tile index or number
+        self.tile2_num = tile2_num
 pairs = []
 
 
@@ -114,16 +116,25 @@ def sortPairs(gameRegion):
                         print("Pair " + str(pairCount) + ": ", str(i + 1) + " and " + str(j + 1))
 
                     # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
-                    pairs.append(Pair("Pair_" + str(pairCount), [tiles[i].centerX, tiles[i].centerY], [tiles[j].centerX, tiles[j].centerY]))
+                    pairs.append(Pair(
+                        "Pair_" + str(pairCount),
+                        [tiles[i].centerX, tiles[i].centerY],
+                        [tiles[j].centerX, tiles[j].centerY],
+                        i + 1,  # assuming tile number starts from 1
+                        j + 1
+                        ))
 
 
+
+import time
+import pyautogui
 
 def locatePairs():
     time.sleep(0.5)
     print("\n\n==== Locating All Pairs ====\n")
 
-    # Sort pairs by highest Y value of either t1 or t2, in descending order
-    sorted_pairs = sorted(pairs, key=lambda p: max(p.t1[1], p.t2[1]), reverse=True)
+    # Sort pairs by the highest tile number of either tile1_num or tile2_num, in descending order
+    sorted_pairs = sorted(pairs, key=lambda p: max(p.tile1_num, p.tile2_num), reverse=True)
 
     for pair in sorted_pairs:
         print(
@@ -142,4 +153,5 @@ def locatePairs():
         time.sleep(0.5)
 
     print("All pairs located successfully")
+
 
