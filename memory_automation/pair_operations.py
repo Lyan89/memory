@@ -118,26 +118,28 @@ def sortPairs(gameRegion):
 
 
 
-# locate and reveal all pairs (completing board)
 def locatePairs():
     time.sleep(0.5)
-    # new section of data display
     print("\n\n==== Locating All Pairs ====\n")
-    length = len(pairs)
-    for i in range(length):
-        # print(
-        #     pairs[i].pairName,
-        #     "\nPosition 1 - \n\t" + "x: " + str(pairs[i].t1[0]) + "\n\ty: " + str(pairs[i].t1[1]), 
-        #     "\nPosition 2 - \n\t" + "x: " + str(pairs[i].t2[0]) + "\n\ty: " + str(pairs[i].t2[1]),
-        #     "\n-------------"
-        # )
 
-        # move to tile1 of pair and click
-        pyautogui.moveTo(pairs[i].t1[0], pairs[i].t1[1])
+    # Sort pairs by highest Y value of either t1 or t2, in descending order
+    sorted_pairs = sorted(pairs, key=lambda p: max(p.t1[1], p.t2[1]), reverse=True)
+
+    for pair in sorted_pairs:
+        print(
+            pair.pairName,
+            "\nPosition 1 - \n\t" + "x: " + str(pair.t1[0]) + "\n\ty: " + str(pair.t1[1]), 
+            "\nPosition 2 - \n\t" + "x: " + str(pair.t2[0]) + "\n\ty: " + str(pair.t2[1]),
+            "\n-------------"
+        )
+
+        pyautogui.moveTo(pair.t1[0], pair.t1[1])
         pyautogui.click()
         time.sleep(0.5)
-        # move to tile2 of pair and click
-        pyautogui.moveTo(pairs[i].t2[0], pairs[i].t2[1])
+
+        pyautogui.moveTo(pair.t2[0], pair.t2[1])
         pyautogui.click()
         time.sleep(0.5)
+
     print("All pairs located successfully")
+
