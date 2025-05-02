@@ -80,4 +80,31 @@ class Browser:
         except Exception as e:
             print(f"Error filling form: {e}")
 
+    def getGameRegion(self):
+        
+        # Wait for canvas
+        wait = WebDriverWait(self.driver, 10)
+        canvas = wait.until(EC.presence_of_element_located((By.TAG_NAME, "canvas")))
+
+        # Get canvas position and size (within browser window)
+        element_x, element_y = canvas.location['x'], canvas.location['y']
+        width, height = canvas.size['width'], canvas.size['height']
+
+        # Get browser window position on screen
+        window_position = self.driver.get_window_position()
+        browser_x, browser_y = window_position['x'], window_position['y']
+
+        # Adjust for OS window decoration (title bar, etc.)
+        # This is platform and browser dependent; here's a general safe margin
+        # You may need to calibrate this!
+        title_bar_height = 85  # Estimate: try 75–90 for Chrome on Windows
+        title_bar_height = 148  # Estimate: try 75–90 for Chrome on Windows
+        left_bar_width = 8
+        true_x = browser_x + element_x + left_bar_width
+        true_y = browser_y + element_y + title_bar_height
+
+        # Region in screen coordinates
+        region = (true_x, true_y, width, height)
+        return region
+
 

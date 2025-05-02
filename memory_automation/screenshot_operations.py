@@ -24,11 +24,15 @@ def captureScreenshot(fileName, mode, x, y, w, h):
         image = cv.cvtColor(np.array(image), cv.COLOR_RGB2BGR)
         cv.imwrite("./imgRef/" + fileName, image)
 
-
-
 # take screenshot of entire window
 def captureWindow():
     # take screenshot of whole window (the 0s are just there to fill params, they don't do anything)
     captureScreenshot("misc/currentBoard.png", "full", 0, 0, 0, 0)
     print("Screenshot taken")
     return "./imgRef/misc/currentBoard.png"
+
+def getGameImage(gameRegion):
+     # Capture game region
+     # Optional: Screenshot using PyAutoGUI
+    screenshot = pyautogui.screenshot(region=gameRegion)
+    screenshot.save("imgRef/canvas_screenshot.png")

@@ -6,7 +6,7 @@ import pygetwindow
 
 # automation functions
 from memory_automation.pair_operations import sortPairs, locatePairs, getPairsArr
-from memory_automation.screenshot_operations import captureWindow
+from memory_automation.screenshot_operations import captureWindow, captureScreenshot, getGameImage
 from memory_automation.tile_operations import getUnknownTileSize, findTileInstances, getTilesArr, getTileImages, initializeTiles, clickStart, clickContinue
 from memory_automation.browser_operations import Browser
 
@@ -29,6 +29,12 @@ def automateMemoryMatch(Username,Email,MaxLevel):
     # Open browser with URL
     browser = Browser(headless=False)
     browser.open(url)
+
+    # Get game region
+    gameRegion = browser.getGameRegion()
+    print(gameRegion)
+
+    getGameImage(gameRegion)
 
     # set length to 9 for 9 levels 
     numberoflevels = MaxLevel
