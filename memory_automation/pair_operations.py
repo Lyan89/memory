@@ -115,15 +115,14 @@ def sortPairs(gameRegion):
                         matched.append(j)
                         print("Pair " + str(pairCount) + ": ", str(i + 1) + " and " + str(j + 1))
 
-                    # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
-                    pairs.append(Pair(
-                        "Pair_" + str(pairCount),
-                        [tiles[i].centerX, tiles[i].centerY],
-                        [tiles[j].centerX, tiles[j].centerY],
-                        i + 1,  # assuming tile number starts from 1
-                        j + 1
-                        ))
-
+                        # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
+                        pairs.append(Pair(
+                            "Pair_" + str(pairCount),
+                            [tiles[i].centerX, tiles[i].centerY],
+                            [tiles[j].centerX, tiles[j].centerY],
+                            i + 1,  # assuming tile number starts from 1
+                            j + 1
+                            ))
 
 
 import time
