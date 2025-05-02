@@ -71,7 +71,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
         # ===== Run Main Funcs ===== #
         # find all unknown tiles
-        initializeTiles()
+        initializeTiles(gameRegion)
 
         print("Current total tiles: " + str(len(tiles)))
 

@@ -35,11 +35,9 @@ def clickContinue():
 def getTilesArr():
     return tiles
 
-def initializeTiles():
+def initializeTiles(gameRegion):
 
-
-    region = (927, 140, 705, 1253)
-
+    region = gameRegion
 
     clickdistancex = 220 # x-distance between click tiles
     clickdistancey = 250 # y-distance between click tiles
