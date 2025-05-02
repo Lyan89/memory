@@ -8,14 +8,8 @@ import pygetwindow
 from memory_automation.pair_operations import sortPairs, locatePairs, getPairsArr
 from memory_automation.screenshot_operations import captureWindow
 from memory_automation.tile_operations import getUnknownTileSize, findTileInstances, getTilesArr, getTileImages, initializeTiles, clickStart, clickContinue
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
+from memory_automation.browser_operations import Browser
+
 
 def automateMemoryMatch(Username,Email,MaxLevel):
     print("Automation Starting")
@@ -32,23 +26,9 @@ def automateMemoryMatch(Username,Email,MaxLevel):
     url = get_url()
     print(url)
 
-    # Configure Chrome to capture browser logs
-    caps = DesiredCapabilities.CHROME
-    caps['goog:loggingPrefs'] = {'browser': 'ALL'}
-
-    options = Options()
-    options.add_experimental_option("detach", True)
-    options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
-
-
-    # Open url in browser
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options
-    )
-    driver.maximize_window()
-    driver.get(url)
-    time.sleep(1)
+    # Open browser with URL
+    browser = Browser(headless=False)
+    browser.open(url)
 
     # set length to 9 for 9 levels 
     numberoflevels = MaxLevel
@@ -73,16 +53,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
         print("\n\n========== Get Logs ==========")
 
         # Retrieve console logs after start
-        logs = driver.get_log('browser')
-        random_numbers = []
-        for log_entry in logs:
-            message = log_entry['message']
-            lines = message.split("\n")
-            for line in lines:
-                if "Random number:" in line:
-                    random_number = int(line.split(": ")[1])
-                    random_numbers.append(random_number)
-
+        random_numbers = browser
         print(random_numbers)
 
         # Check if random_numbers is empty
@@ -126,20 +97,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
             # wait for level complete animation
             time.sleep(6)
 
-            print("\n\n==== Enter Contact ====\n")
-            elementName = WebDriverWait(driver, 0.1).until(
-                EC.presence_of_element_located((By.ID, "name"))
-            )
-
-            # Now interact with it
-            elementName.send_keys(Username)
-
-            elementMail = WebDriverWait(driver, 0.1).until(
-                EC.presence_of_element_located((By.ID, "email"))
-            )
-
-            # Now interact with it
-            elementMail.send_keys(Email)
+            browser.fill_contact_form(Username, Email)
 
             # Click continue
             clickContinue()
