@@ -52,7 +52,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
 
         loop_start = time.time()
 
-        clickStart()
+        clickStart(gameRegion)
 
         print("Starting with Level: " + str(level))
 
@@ -106,7 +106,7 @@ def automateMemoryMatch(Username,Email,MaxLevel):
             browser.fill_contact_form(Username, Email)
 
             # Click continue
-            clickContinue()
+            clickContinue(gameRegion)
 
         # wait for level complete animation
         time.sleep(3)

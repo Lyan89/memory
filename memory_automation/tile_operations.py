@@ -21,13 +21,30 @@ class Tile:
         self.centerY = centerY
 tiles = []
 
-def clickStart():
-    pyautogui.moveTo(1266, 945)   # moves mouse
+def clickStart(gameRegion):
+
+    offsetx = 0 
+    offsety = 805
+
+    clickx = int(gameRegion[0] + gameRegion[2]/2+offsetx)
+    clicky = int(gameRegion[1] + offsety)
+
+    print(clickx)
+    print(clicky)
+    pyautogui.moveTo(clickx, clicky)   # moves mouse
     pyautogui.click()  # click the mouse
     time.sleep(1)
 
-def clickContinue():
-    pyautogui.moveTo(1266, 955)   # moves mouse
+def clickContinue(gameRegion):
+
+    offsetx = 0 
+    offsety = 815
+
+    clickx = int(gameRegion[0] + gameRegion[2]/2+offsetx)
+    clicky = int(gameRegion[1] + offsety)
+
+    
+    pyautogui.moveTo(clickx, clicky)   # moves mouse
     pyautogui.click()  # click the mouse
     time.sleep(1)
 
