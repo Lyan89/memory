@@ -37,7 +37,8 @@ def automateMemoryMatch(Username,Email,MaxLevel):
     getGameImage(gameRegion)
 
     # set length to 9 for 9 levels 
-    numberoflevels = MaxLevel
+    current_level = 0
+    end_level = MaxLevel
 
     # get tiles and pairs arr
     tiles = getTilesArr()
@@ -46,78 +47,91 @@ def automateMemoryMatch(Username,Email,MaxLevel):
     # Start total timer
     total_start = time.time()
 
-    for level in range(numberoflevels):
 
-        print("\n\n========== Start Game ==========")
+    while True:
 
-        loop_start = time.time()
+        for level in range(current_level, end_level):
 
-        clickStart(gameRegion)
+            print("\n\n========== Start Game ==========")
 
-        print("Starting with Level: " + str(level))
+            loop_start = time.time()
 
-        print("\n\n========== Get Logs ==========")
+            clickStart(gameRegion)
 
-        # Retrieve console logs after start
-        random_numbers = browser.extract_random_numbers_from_console()
-        
+            print("Starting with Level: " + str(level))
 
-        # Check if random_numbers is empty
-        if not random_numbers:
-            print("No random numbers found in the logs.")
-            break  # only valid if this is inside a loop
-        else:
-            print("Random number: " + str(random_numbers))
+            print("\n\n========== Get Logs ==========")
 
-        print("\n\n========== New Iteration ==========")
+            # Retrieve console logs after start
+            random_numbers = browser.extract_random_numbers_from_console()
+            
 
-        # ===== Run Main Funcs ===== #
-        # find all unknown tiles
-        initializeTiles(gameRegion)
+            # Check if random_numbers is empty
+            if not random_numbers:
+                print("No random numbers found in the logs.")
+                break  # only valid if this is inside a loop
+            else:
+                print("Random number: " + str(random_numbers))
 
-        print("Current total tiles: " + str(len(tiles)))
+            print("\n\n========== New Iteration ==========")
 
-        # get all revealed tile images
-        getTileImages()
+            # ===== Run Main Funcs ===== #
+            # find all unknown tiles
+            initializeTiles(gameRegion)
 
-        # get all pairs
-        sortPairs()
+            print("Current total tiles: " + str(len(tiles)))
 
-        # find and locate all pairs
-        locatePairs()
-        
-        # ========================== #
-        # delete all tile images
-        print("\n\n==== Deleting all Tile Images ====\n")
-        for i in range(len(tiles)):
-            "./imgRef/tiles/img_" + str(i + 1) + ".png"
-            os.remove("./imgRef/tiles/img_" + str(i + 1) + ".png")
-        print("Tiles deleted successfully")
+            # get all revealed tile images
+            getTileImages()
 
-        # remove everything in tiles and pairs arr to reset them to be used in next iteration
-        print("\n\n==== Clearing arrays ====\n")
-        tiles.clear()
-        pairs.clear()
-        print("Arrays cleared successfully")
+            # get all pairs
+            sortPairs()
 
-        if (level == 0):
+            # find and locate all pairs
+            locatePairs()
+            
+            # ========================== #
+            # delete all tile images
+            print("\n\n==== Deleting all Tile Images ====\n")
+            for i in range(len(tiles)):
+                "./imgRef/tiles/img_" + str(i + 1) + ".png"
+                os.remove("./imgRef/tiles/img_" + str(i + 1) + ".png")
+            print("Tiles deleted successfully")
+
+            # remove everything in tiles and pairs arr to reset them to be used in next iteration
+            print("\n\n==== Clearing arrays ====\n")
+            tiles.clear()
+            pairs.clear()
+            print("Arrays cleared successfully")
+
+            if (level == 0):
+
+                # wait for level complete animation
+                time.sleep(6)
+
+                browser.fill_contact_form(Username, Email)
+
+                # Click continue
+                clickContinue(gameRegion)
 
             # wait for level complete animation
-            time.sleep(6)
+            time.sleep(3)
 
-            browser.fill_contact_form(Username, Email)
+            loop_end = time.time()
+            loop_duration = loop_end - loop_start
+            print(f"Level {level} duration: {loop_duration:.4f} seconds")
 
-            # Click continue
-            clickContinue(gameRegion)
+        # End total timer
+        total_end = time.time()
+        total_duration = total_end - total_start
+        print(f"Total duration: {total_duration:.4f} seconds")
 
-        # wait for level complete animation
-        time.sleep(3)
+        user_input = input(
+            f"You are at level {level}. Enter how many levels to play (or 'q' to quit): "
+        )
+        if user_input.lower() == 'q':
+            print("Exiting program.")
+            break
 
-        loop_end = time.time()
-        loop_duration = loop_end - loop_start
-        print(f"Level {level} duration: {loop_duration:.4f} seconds")
-
-    # End total timer
-    total_end = time.time()
-    total_duration = total_end - total_start
-    print(f"Total duration: {total_duration:.4f} seconds")
+        levels_to_run = int(user_input)
+        end_level = current_level + levels_to_run
