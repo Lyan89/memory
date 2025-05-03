@@ -69,67 +69,68 @@ def matchPair(imgPath1, imgPath2, thresholdVal,frameSize):
     
 
 
-# sort into pairs
 def sortPairs(gameRegion):
+    scale = gameRegion[2] / 705
+    frameSize = int(22 * scale)
 
-    scale = gameRegion[2]/705 # Scaling in case game region is different than originally currentWidth/designerwidth
-    frameSize = int(22*scale)
-
-
-    # get tiles arr
     tiles = getTilesArr()
-
-    # new section of data display
     print("\n\n==== Getting All Tile Pairs ====\n")
-    pairCount = len(pairs)
-    # get length for both loops
+
+    pairCount = len(pairs)  # Assuming 'pairs' is a global list
+    matched = set()
     length = len(tiles)
-    # have exclude list so we don't get 2x pairs (2 and 4 match, 4 and 2 match)
-    matched = []
 
-    uncovered = False
-
-    # loop through all tiles to match all against all (brute force I guess)
     for i in range(length):
-        # print(matched)
+        if i in matched:
+            continue
 
-        for j in range(length):
-            # if i already has it's match, we skip to next i
-            if i in matched:
-                break
-            # if we are comparing the same image, we skip to next j
-            elif i == j:
-                j += 1
+        for j in range(i + 1, length):
+            if j in matched:
                 continue
 
-            else:
-                scale = gameRegion
-                # compare image i and j
-                checkMatch = matchPair("./imgRef/tiles/img_" + str(i + 1) + ".png", "./imgRef/tiles/img_" + str(j + 1) + ".png", thresholdVal = 0.8, frameSize=frameSize)
-                # if they match we increment pairCount and add i to the matched arr
-                if checkMatch:
-                    if ((j - i) == 1) and ((j % 2) != 0) and ((tiles[j].tileNumber-tiles[i].tileNumber) == 1):
-                        pairCount += 1
-                        print("Pair " + str(pairCount) + " was " + str(i + 1)  + " and " + str(j + 1) + " but has already been uncovered")
-                        matched.append(i)
-                        matched.append(j)
-                        uncovered = True
-                    else:
-                        pairCount += 1
-                        matched.append(i)
-                        matched.append(j)
-                        print("Pair " + str(pairCount) + ": ", str(i + 1) + " and " + str(j + 1))
-                        uncovered = False
+            match = matchPair(
+                f"./imgRef/tiles/img_{i + 1}.png",
+                f"./imgRef/tiles/img_{j + 1}.png",
+                thresholdVal=0.8,
+                frameSize=frameSize
+            )
 
-                    # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
-                    pairs.append(Pair(
-                        "Pair_" + str(pairCount),
-                        [tiles[i].centerX, tiles[i].centerY],
-                        [tiles[j].centerX, tiles[j].centerY],
-                        i,  # assuming tile number starts from 1
-                        j,
-                        uncovered
-                        ))
+            if match:
+                pairCount += 1
+                matched.update([i, j])
+
+                uncovered = ((j - i) == 1) and ((j % 2) != 0) and ((tiles[j].tileNumber - tiles[i].tileNumber) == 1)
+
+                print(f"Pair {pairCount}{' (uncovered)' if uncovered else ''}: {i + 1} and {j + 1}")
+
+                pairs.append(Pair(
+                    f"Pair_{pairCount}",
+                    [tiles[i].centerX, tiles[i].centerY],
+                    [tiles[j].centerX, tiles[j].centerY],
+                    i,
+                    j,
+                    uncovered
+                ))
+                break  # Once tile i is matched, go to next i
+
+    # 🔒 Failsafe: if exactly 2 unmatched tiles remain, force pair them
+    unmatched = [idx for idx in range(length) if idx not in matched]
+    if len(unmatched) == 2:
+        i, j = unmatched
+        pairCount += 1
+        print(f"Failsafe Pair {pairCount}: {i + 1} and {j + 1} (forced match)")
+
+        pairs.append(Pair(
+            f"Pair_{pairCount}",
+            [tiles[i].centerX, tiles[i].centerY],
+            [tiles[j].centerX, tiles[j].centerY],
+            i,
+            j,
+            uncovered=False
+        ))
+        matched.update(unmatched)
+
+
 
 def getUnmatchedTileNumbers(expectedNumberOfTiles):
     # All expected tile numbers from 0 to expectedNumberOfTiles - 1
