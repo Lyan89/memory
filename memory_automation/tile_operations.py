@@ -11,8 +11,9 @@ from memory_automation.screenshot_operations import captureScreenshot
 
 # declare tile class to create instances and add to arr of tiles
 class Tile:
-    def __init__(self, tileName, x, y, w, h, centerX, centerY):
+    def __init__(self, tileName,tileNumber , x, y, w, h, centerX, centerY):
         self.tileName = tileName
+        self.tileNumber = tileNumber
         self.x = x
         self.y = y
         self.w = w
@@ -109,7 +110,7 @@ def initializeTiles(gameRegion):
             h = tileheight -2*cropclearance
 
             # add rect data to tiles arr
-            tiles.append(Tile("tile_" + str(counter), x, y, w, h, centerX, centerY))
+            tiles.append(Tile("tile_" + str(counter),counter , x, y, w, h, centerX, centerY))
             counter = counter + 1
 
 
