@@ -10,12 +10,13 @@ from memory_automation.tile_operations import getTilesArr
 
 # declare pair class for matching pairs
 class Pair:
-    def __init__(self, pairName, t1, t2, tile1_num, tile2_num):
+    def __init__(self, pairName, t1, t2, tile1_num, tile2_num,uncovered):
         self.pairName = pairName
         self.t1 = t1
         self.t2 = t2
         self.tile1_num = tile1_num  # tile index or number
         self.tile2_num = tile2_num
+        self.uncovered = uncovered
 pairs = []
 
 
@@ -86,6 +87,8 @@ def sortPairs(gameRegion):
     # have exclude list so we don't get 2x pairs (2 and 4 match, 4 and 2 match)
     matched = []
 
+    uncovered = False
+
     # loop through all tiles to match all against all (brute force I guess)
     for i in range(length):
         # print(matched)
@@ -106,24 +109,45 @@ def sortPairs(gameRegion):
                 # if they match we increment pairCount and add i to the matched arr
                 if checkMatch:
                     if ((j - i) == 1) and ((j % 2) != 0):
-                        print("Pair was " + str(i + 1)  + " and " + str(j + 1) + " but has already been matched")
+                        print("Pair was " + str(i + 1)  + " and " + str(j + 1) + " but has already been uncovered")
                         matched.append(i)
                         matched.append(j)
+                        uncovered = True
                     else:
                         pairCount += 1
                         matched.append(i)
                         matched.append(j)
                         print("Pair " + str(pairCount) + ": ", str(i + 1) + " and " + str(j + 1))
+                        uncovered = False
 
-                        # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
-                        pairs.append(Pair(
-                            "Pair_" + str(pairCount),
-                            [tiles[i].centerX, tiles[i].centerY],
-                            [tiles[j].centerX, tiles[j].centerY],
-                            i + 1,  # assuming tile number starts from 1
-                            j + 1
-                            ))
+                    # added a new pair and give thir x and y coords as centerX and centerY of tiles i and j respectively
+                    pairs.append(Pair(
+                        "Pair_" + str(pairCount),
+                        [tiles[i].centerX, tiles[i].centerY],
+                        [tiles[j].centerX, tiles[j].centerY],
+                        i,  # assuming tile number starts from 1
+                        j,
+                        uncovered
+                        ))
 
+def getUnmatchedPairs():
+    # get tiles arr
+    tiles = getTilesArr()
+
+    pairs = getPairsArr()
+
+    # get length for both loops
+    length_tiles = len(tiles)
+    length_pairs = len(pairs)
+
+
+    for tile in range(length_tiles):
+        unmatched = True
+        for pair in range(length_pairs):
+           unmatched = False
+
+
+    return False
 
 import time
 import pyautogui
@@ -142,14 +166,15 @@ def locatePairs():
          #     "\nPosition 2 - \n\t" + "x: " + str(pair.t2[0]) + "\n\ty: " + str(pair.t2[1]),
          #     "\n-------------"
          # )
+        # Skip if already uncovered
+        if pair.uncovered == False:
+            pyautogui.moveTo(pair.t1[0], pair.t1[1])
+            pyautogui.click()
+            time.sleep(0.5)
 
-        pyautogui.moveTo(pair.t1[0], pair.t1[1])
-        pyautogui.click()
-        time.sleep(0.5)
-
-        pyautogui.moveTo(pair.t2[0], pair.t2[1])
-        pyautogui.click()
-        time.sleep(0.5)
+            pyautogui.moveTo(pair.t2[0], pair.t2[1])
+            pyautogui.click()
+            time.sleep(0.5)
 
     print("All pairs located successfully")
 
