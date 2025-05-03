@@ -130,24 +130,21 @@ def sortPairs(gameRegion):
                         uncovered
                         ))
 
-def getUnmatchedPairs():
-    # get tiles arr
-    tiles = getTilesArr()
+def getUnmatchedTileNumbers(expectedNumberOfTiles):
+    # All expected tile numbers from 0 to expectedNumberOfTiles - 1
 
-    pairs = getPairsArr()
-
-    # get length for both loops
-    length_tiles = len(tiles)
-    length_pairs = len(pairs)
-
-
-    for tile in range(length_tiles):
-        unmatched = True
-        for pair in range(length_pairs):
-           unmatched = False
-
-
-    return False
+    all_tile_numbers = set(range(expectedNumberOfTiles))
+    
+    # Tile numbers found in pairs
+    paired_tile_numbers = set()
+    for pair in pairs:
+        paired_tile_numbers.add(pair.tile1_num)
+        paired_tile_numbers.add(pair.tile2_num)
+        
+    # Unmatched tile numbers = all - those in pairs
+    unmatched_tile_numbers = list(all_tile_numbers - paired_tile_numbers)
+    
+    return sorted(unmatched_tile_numbers)
 
 import time
 import pyautogui
