@@ -57,7 +57,9 @@ def clickContinue(gameRegion):
 def getTilesArr():
     return tiles
 
-def initializeTiles(gameRegion):
+def initializeUnmachtedTiles(gameRegion,unmatched_tile_numbers):
+
+    tiles.clear()
 
     region = gameRegion
 
@@ -72,7 +74,7 @@ def initializeTiles(gameRegion):
     startclickx = int(region[0] + region[2]/2 - clickdistancex + clickoffsetx)
     startclicky = int(region[1] + clickoffsety)
 
-    print("startclickx: " + str(startclickx) + " startclicky: " + str(startclicky))
+    # print("startclickx: " + str(startclickx) + " startclicky: " + str(startclicky))
 
 
     tiledistancex = int(261*scale) # x-distance between tiles
@@ -84,7 +86,7 @@ def initializeTiles(gameRegion):
     starttilex = int(region[0] + region[2]/2 - tiledistancex + tileoffsetx)
     starttiley = int(region[1] + tileoffsety)
 
-    print("starttilex: " + str(starttilex) + " starttiley: " + str(starttiley))
+    # print("starttilex: " + str(starttilex) + " starttiley: " + str(starttiley))
 
     cropclearance = int(22*scale) # images need be cropped by this much (Since not full size is visible everywhere)
 
@@ -109,8 +111,9 @@ def initializeTiles(gameRegion):
             w = tilewidth -2*cropclearance
             h = tileheight -2*cropclearance
 
-            # add rect data to tiles arr
-            tiles.append(Tile("tile_" + str(counter),counter , x, y, w, h, centerX, centerY))
+            # add rect data to tiles arr if unmachted
+            if counter in unmatched_tile_numbers:
+                tiles.append(Tile("tile_" + str(counter),counter , x, y, w, h, centerX, centerY))
             counter = counter + 1
 
 

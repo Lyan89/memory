@@ -5,9 +5,9 @@ import random
 import pygetwindow
 
 # automation functions
-from memory_automation.pair_operations import sortPairs, locatePairs, getPairsArr
+from memory_automation.pair_operations import sortPairs, locatePairs, getPairsArr, getUnmatchedTileNumbers
 from memory_automation.screenshot_operations import captureWindow, captureScreenshot, getGameImage
-from memory_automation.tile_operations import getUnknownTileSize, findTileInstances, getTilesArr, getTileImages, initializeTiles, clickStart, clickContinue
+from memory_automation.tile_operations import getUnknownTileSize, findTileInstances, getTilesArr, getTileImages, initializeUnmachtedTiles, clickStart, clickContinue
 from memory_automation.browser_operations import Browser
 
 
@@ -39,6 +39,9 @@ def automateMemoryMatch(Username,Email,MaxLevel):
     # set length to 9 for 9 levels 
     current_level = 0
     end_level = MaxLevel
+
+    maxPairs = 6
+    numberOfTiles = 12
 
     # get tiles and pairs arr
     tiles = getTilesArr()
@@ -74,19 +77,23 @@ def automateMemoryMatch(Username,Email,MaxLevel):
                 print("Random number: " + str(random_numbers))
 
             print("\n\n========== New Iteration ==========")
+            while len(pairs) < maxPairs:
+                # ===== Run Main Funcs ===== #
+                # find all unknown tiles
+                unmatched_tile_numbers = getUnmatchedTileNumbers(numberOfTiles)
 
-            # ===== Run Main Funcs ===== #
-            # find all unknown tiles
-            initializeTiles(gameRegion)
+                print("Number of unmatched tiles: " + str(len(unmatched_tile_numbers)) + " Number of pairs: " + str(len(pairs)))
+                incremented = [n + 1 for n in unmatched_tile_numbers]
+                print("Unmatched Tile numbers: " + str(incremented))
 
-            print("Current total tiles: " + str(len(tiles)))
-            
-            # get all revealed tile images
-            getTileImages()
+                initializeUnmachtedTiles(gameRegion,unmatched_tile_numbers)
 
-            # get all pairs
-            sortPairs(gameRegion)
+                # get all revealed tile images
+                getTileImages()
 
+                # get all pairs
+                sortPairs(gameRegion)
+ 
             # find and locate all pairs
             locatePairs()
             

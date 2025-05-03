@@ -81,7 +81,7 @@ def sortPairs(gameRegion):
 
     # new section of data display
     print("\n\n==== Getting All Tile Pairs ====\n")
-    pairCount = 0
+    pairCount = len(pairs)
     # get length for both loops
     length = len(tiles)
     # have exclude list so we don't get 2x pairs (2 and 4 match, 4 and 2 match)
@@ -108,8 +108,9 @@ def sortPairs(gameRegion):
                 checkMatch = matchPair("./imgRef/tiles/img_" + str(i + 1) + ".png", "./imgRef/tiles/img_" + str(j + 1) + ".png", thresholdVal = 0.8, frameSize=frameSize)
                 # if they match we increment pairCount and add i to the matched arr
                 if checkMatch:
-                    if ((j - i) == 1) and ((j % 2) != 0):
-                        print("Pair was " + str(i + 1)  + " and " + str(j + 1) + " but has already been uncovered")
+                    if ((j - i) == 1) and ((j % 2) != 0) and ((tiles[j].tileNumber-tiles[i].tileNumber) == 1):
+                        pairCount += 1
+                        print("Pair " + str(pairCount) + " was " + str(i + 1)  + " and " + str(j + 1) + " but has already been uncovered")
                         matched.append(i)
                         matched.append(j)
                         uncovered = True
